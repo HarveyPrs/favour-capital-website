@@ -118,30 +118,18 @@ export function BackgroundLayers({
       {has("scrim") && <div className="fx-scrim absolute inset-0" />}
 
       {has("diagonal") && (
-        <div className="absolute top-[-40px] left-[-40px] z-[4] h-72 w-72">
-          {/* Soft corner sheen (§6) — a faint diagonal lift so the accent reads
-              as a natural fold in the photo rather than applied bars. */}
+        // Corner banner (§6): a thin brand ribbon that wraps the top-left
+        // corner edge-to-edge — pinned to the left edge, rotated 45° so it
+        // crosses to the top edge, then clipped by the container so it reads
+        // as part of the poster rather than two applied bars. The `top`
+        // anchor is a percentage so the wrap scales with the panel.
+        <div className="absolute inset-0 z-[4] overflow-hidden">
           <div
-            className="absolute inset-0 mix-blend-screen"
+            className="absolute top-[40%] left-0 h-3 w-[300%] origin-left -rotate-45"
             style={{
-              background:
-                "linear-gradient(135deg, var(--color-hairline), transparent 42%)",
-            }}
-          />
-          {/* Brand lines fade toward the interior — no hard end floating
-              mid-frame — so they blend into the background from the corner. */}
-          <span
-            className="absolute top-6 left-0 h-[2px] w-[416px] origin-left rotate-45"
-            style={{
-              background:
-                "linear-gradient(90deg, var(--color-brand-orange), transparent 76%)",
-            }}
-          />
-          <span
-            className="absolute top-9 left-0 h-[2px] w-[416px] origin-left rotate-45 opacity-80"
-            style={{
-              background:
-                "linear-gradient(90deg, var(--color-brand-blue), transparent 72%)",
+              background: "linear-gradient(var(--color-hairline), transparent)",
+              borderTop: "2px solid var(--color-brand-blue)",
+              borderBottom: "2px solid var(--color-brand-orange)",
             }}
           />
         </div>
