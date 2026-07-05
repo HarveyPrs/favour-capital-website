@@ -168,6 +168,7 @@ Specs reflect the approved hero. Build as reusable React components.
 - Transparent over dark hero; on scroll → `ink`@85% with `backdrop-blur` + hairline bottom.
 - Left: logo lockup (white on dark, full-color on light). Center/right: nav links (`label`, `text-secondary`, hover white). Right: **Get in touch** pill.
 - Mobile: hamburger → full-screen `ink` overlay menu.
+- Logo/tone swap: the fixed bar is dark-toned by default. A light-background section can claim the bar (navy wordmark + white glass fill) by carrying a `data-header-light` attribute on the element that sits under the header band — `<SiteHeader>` watches these and applies `.tone-light` while one straddles the header baseline. The lockup is a tight-cropped inline SVG (`<Logo>`); the mark keeps its brand colors, the wordmark inherits `currentColor`.
 
 ### Buttons
 
