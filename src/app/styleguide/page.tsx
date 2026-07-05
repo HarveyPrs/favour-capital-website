@@ -405,20 +405,23 @@ export default function StyleguidePage() {
         </div>
       </section>
 
-      {/* Primitives & motion utilities (FAV-8) */}
+      {/* Primitives, motion utilities & core components (FAV-8 / FAV-11) */}
       <section className="mt-20">
         <h2 className="mb-2 text-h2 font-display font-bold">
-          Primitives &amp; motion utilities
+          Primitives, motion &amp; core components
         </h2>
         <p className="mb-8 text-body-sm text-text-muted">
           The base building blocks every page composes from —{" "}
           <code className="text-text-accent">Section</code>,{" "}
           <code className="text-text-accent">Container</code>,{" "}
           <code className="text-text-accent">Button</code>,{" "}
-          <code className="text-text-accent">Eyebrow</code> — plus the{" "}
+          <code className="text-text-accent">Eyebrow</code> — the{" "}
           <code className="text-text-accent">Reveal</code>,{" "}
           <code className="text-text-accent">useCountUp</code> and hover-lift
-          motion helpers. All respect{" "}
+          motion helpers, plus the content components{" "}
+          <code className="text-text-accent">GlassCard</code>,{" "}
+          <code className="text-text-accent">DealCard</code> and{" "}
+          <code className="text-text-accent">StatBlock</code>. All respect{" "}
           <code className="text-text-accent">prefers-reduced-motion</code>.
         </p>
         <PrimitivesShowcase />

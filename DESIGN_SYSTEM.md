@@ -156,6 +156,7 @@ Named tokens — use everywhere for consistency. All motion respects `prefers-re
 - **Ken-Burns** (hero photo) — `scale 1→1.08`, `dur-ambient`, `alternate`, infinite.
 - **Glow drift** — translate/scale blobs slowly, `mix-blend-mode: screen`, infinite alternate.
 - **Pulse dot** — expanding box-shadow ring, 2s infinite (live/status indicator).
+- **Bob** (hero glass tombstones) — `translateY 0→-8px→0`, `6s`, `ease-inout`, infinite. Exposed as the `animate-bob` utility (`--animate-bob` token); a stack of cards drifts out of phase via a per-card `animationDelay` (0 / .55 / 1.1s). `motion-safe:`-gated, so it's dropped under reduced motion.
 
 ---
 

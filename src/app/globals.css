@@ -112,6 +112,17 @@
      curves so `ease-out` / `ease-in-out` are correct everywhere by default. */
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Ambient bob (§6) — gentle float loop for hero glass tombstones.
+     6s ambient-tier duration on the house ambient curve; applied via the
+     `motion-safe:animate-bob` utility so it drops under reduced motion (§8). */
+  --animate-bob: bob 6s var(--ease-in-out) infinite;
+
+  @keyframes bob {
+    50% {
+      transform: translateY(-8px);
+    }
+  }
 }
 
 /* Desktop type scale (§3) — ≥768px matches Tailwind's `md` breakpoint. */

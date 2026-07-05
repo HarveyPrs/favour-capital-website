@@ -2,8 +2,33 @@
 
 import { Button } from "@/components/Button";
 import { CountUp } from "@/components/CountUp";
+import { DealCard } from "@/components/DealCard";
 import { Eyebrow } from "@/components/Eyebrow";
+import { GlassCard } from "@/components/GlassCard";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
+import { StatBlock } from "@/components/StatBlock";
+
+/** Seed deals (FAV-11 acceptance criteria) — real, confirmed tombstones. */
+const seedDeals = [
+  {
+    company: "dtcpay",
+    round: "Series A",
+    amount: "US$10.0M",
+    investors: "Vertex Ventures SEA & India",
+  },
+  {
+    company: "Buymed",
+    round: "Series B",
+    amount: "US$51.5M",
+    investors: "UOB Venture · DFC · Smilegate",
+  },
+  {
+    company: "Inteluck",
+    round: "Series C",
+    amount: "US$34M",
+    investors: "Navegar · East Ventures",
+  },
+] as const;
 
 /**
  * Live demos of the FAV-8 primitives + motion utilities. Kept as a client
@@ -104,6 +129,62 @@ export function PrimitivesShowcase() {
             </RevealItem>
           ))}
         </RevealGroup>
+      </div>
+
+      {/* GlassCard */}
+      <div>
+        <h3 className="mb-4 text-h3 font-display font-semibold text-text-secondary">
+          GlassCard — glass fill, hairline, backdrop-blur, radius md
+        </h3>
+        <div className="grid gap-4 rounded-md bg-surface-1 p-6 sm:grid-cols-2">
+          <GlassCard>
+            <p className="text-label font-semibold text-text-primary">
+              Static glass card
+            </p>
+            <p className="mt-1 text-body-sm text-text-muted">
+              Base surface for tombstones and floating UI.
+            </p>
+          </GlassCard>
+          <GlassCard bob>
+            <p className="text-label font-semibold text-text-primary">
+              With <code className="text-text-accent">bob</code>
+            </p>
+            <p className="mt-1 text-body-sm text-text-muted">
+              Gentle 6s float — drops under reduced motion.
+            </p>
+          </GlassCard>
+        </div>
+      </div>
+
+      {/* DealCard */}
+      <div>
+        <h3 className="mb-4 text-h3 font-display font-semibold text-text-secondary">
+          DealCard — company + round tag, orange amount, investors (staggered
+          bob)
+        </h3>
+        <div className="grid gap-4 rounded-md bg-surface-1 p-6 sm:grid-cols-3">
+          {seedDeals.map((deal, i) => (
+            <DealCard key={deal.company} bob bobDelay={i * 0.55} {...deal} />
+          ))}
+        </div>
+      </div>
+
+      {/* StatBlock */}
+      <div>
+        <h3 className="mb-4 text-h3 font-display font-semibold text-text-secondary">
+          StatBlock — count-up on in-view, `*` placeholder support
+        </h3>
+        <div className="grid grid-cols-2 gap-6 rounded-md border border-hairline bg-surface-1 p-6 sm:grid-cols-4">
+          <StatBlock value={1200} prefix="US$" suffix="M+" label="Capital raised" placeholder />
+          <StatBlock value={40} suffix="+" label="Transactions" placeholder />
+          <StatBlock value={15} suffix="+" label="Years advising" placeholder />
+          <StatBlock value={3} label="Continents" placeholder />
+        </div>
+        <p className="mt-3 text-body-sm text-text-muted">
+          Placeholder figures carry a trailing{" "}
+          <code className="text-text-accent">*</code> until real numbers are
+          confirmed.
+        </p>
       </div>
     </div>
   );
