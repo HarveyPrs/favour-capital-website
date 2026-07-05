@@ -153,8 +153,8 @@ Named tokens — use everywhere for consistency. All motion respects `prefers-re
 - **Reveal on scroll** — `opacity 0→1`, `y 16→0`, `dur-slow`, `ease-out`, `whileInView` once, `staggerChildren: 0.1`.
 - **Count-up** — animate number 0→target over `dur-count`, cubic ease-out, on in-view. Always `Math.round`.
 - **Hover-lift** (buttons/cards) — `y: -3px` + deepen shadow, `dur-fast`. `active`: `y: -1px`.
-- **Ken-Burns** (hero photo) — `scale 1→1.08`, `dur-ambient`, `alternate`, infinite.
-- **Glow drift** — translate/scale blobs slowly, `mix-blend-mode: screen`, infinite alternate.
+- **Ken-Burns** (hero photo) — `scale 1→1.08`, `dur-ambient`, `alternate`, infinite. Exposed as the `animate-ken-burns` utility (`--animate-ken-burns`, 26s).
+- **Glow drift** — translate/scale blobs slowly, `mix-blend-mode: screen`, infinite. Exposed as `animate-drift-slow` / `animate-drift-slower` (`--animate-drift-*`, 15s / 18s). All three are `motion-safe:`-gated so they drop under reduced motion.
 - **Pulse dot** — expanding box-shadow ring, 2s infinite (live/status indicator).
 - **Bob** (hero glass tombstones) — `translateY 0→-8px→0`, `6s`, `ease-inout`, infinite. Exposed as the `animate-bob` utility (`--animate-bob` token); a stack of cards drifts out of phase via a per-card `animationDelay` (0 / .55 / 1.1s). `motion-safe:`-gated, so it's dropped under reduced motion.
 
@@ -198,9 +198,13 @@ Number (Sora 800, 22–36px, white/navy) + overline label (`text-muted`). Count-
 
 Handles vertical rhythm, container, optional dark/light variant, optional background layers (photo + scrim + grid + glow). Props: `tone: 'dark' | 'light'`, `bg?`.
 
-### Background layers (dark hero)
+### Background layers (`<BackgroundLayers>`)
 
-Stack z-order: photo (`opacity .62`, Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → content. Diagonal orange+blue lines = brand motif, top-left corner.
+Reusable layered backdrop for dark immersive sections. Stack z-order: photo (`opacity .62`, Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → content. Diagonal orange+blue lines = brand motif, top-left corner.
+
+- Props: `layers?` (subset of `photo | glow | grid | scrim | diagonal`, default all — photo auto-skips with no image), `image?`, `imageAlt?`, `imagePosition?`, `priority?`, `intensity?` (`subtle | normal | bold` — scales photo + glow opacity only, never the scrim, so the AA guarantee is constant).
+- Server component: pure CSS + `next/image`, `aria-hidden`, non-interactive. The composite geometry/masks live as the `fx-blob` / `fx-grid` / `fx-scrim` utilities in `globals.css` (all color from tokens); ambient loops use the `animate-ken-burns` / `animate-drift-*` tokens, `motion-safe:`-gated (§8).
+- Drop it into the `<Section bg={…}>` slot: the section becomes a clipped stacking context and its content is lifted to `relative z-10` above the layers.
 
 ### Footer
 

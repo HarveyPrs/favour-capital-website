@@ -19,6 +19,12 @@ type SectionProps = {
    * media) that manage their own inner layout instead of the shared column.
    */
   container?: boolean;
+  /**
+   * Optional layered backdrop (§6) — pass a `<BackgroundLayers />`. The section
+   * becomes a positioned, clipped stacking context and its content is lifted
+   * above the layers (`relative z-10`). Content-only sections omit this.
+   */
+  bg?: ReactNode;
   id?: string;
 };
 
@@ -33,6 +39,7 @@ export function Section({
   className,
   containerClassName,
   container = true,
+  bg,
   id,
 }: SectionProps) {
   return (
@@ -40,14 +47,18 @@ export function Section({
       id={id}
       className={cn(
         "py-16 md:py-24",
+        Boolean(bg) && "relative isolate overflow-hidden",
         tone === "light"
           ? "tone-light bg-surface-light text-text-primary"
           : "bg-ink text-text-primary",
         className,
       )}
     >
+      {bg}
       {container ? (
-        <Container className={containerClassName}>{children}</Container>
+        <Container className={cn(Boolean(bg) && "relative z-10", containerClassName)}>
+          {children}
+        </Container>
       ) : (
         children
       )}

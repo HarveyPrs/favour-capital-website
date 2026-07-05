@@ -123,6 +123,32 @@
       transform: translateY(-8px);
     }
   }
+
+  /* ---- Ambient background loops (§5, §6) — Ken-Burns photo push-in and the
+     two glow-blob drifts for the layered dark-section background. Applied via
+     the `motion-safe:animate-*` utilities so they pause under reduced motion
+     (§8). Durations sit inside the `dur-ambient` 15–26s band. */
+  --animate-ken-burns: ken-burns 26s var(--ease-in-out) infinite alternate;
+  --animate-drift-slow: drift-slow 15s var(--ease-in-out) infinite;
+  --animate-drift-slower: drift-slower 18s var(--ease-in-out) infinite;
+
+  @keyframes ken-burns {
+    to {
+      transform: scale(1.08) translateY(-2%);
+    }
+  }
+
+  @keyframes drift-slow {
+    50% {
+      transform: translate(40px, 30px) scale(1.08);
+    }
+  }
+
+  @keyframes drift-slower {
+    50% {
+      transform: translate(-40px, 26px) scale(1.06);
+    }
+  }
 }
 
 /* Desktop type scale (§3) — ≥768px matches Tailwind's `md` breakpoint. */
@@ -209,6 +235,60 @@
   background: var(--glass);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+/*
+ * Background layer system (§6) — composite layers for dark immersive
+ * sections, stacked photo → glow → grid → scrim → diagonal → content. All
+ * color comes from tokens; the geometry/masks below are the canonical
+ * background implementation so the `<BackgroundLayers>` component stays
+ * declarative. Ambient loops ride the `animate-*` tokens above.
+ */
+
+/* Glow blob — soft radial light (pair with a `glow-orange` / `glow-blue`
+   fill and a `motion-safe:animate-drift-*` loop). `screen` blend lets it
+   lift the photo below; blobs sit above the photo (z-index 1). */
+@utility fx-blob {
+  position: absolute;
+  z-index: 1;
+  border-radius: var(--radius-pill);
+  filter: blur(80px);
+  mix-blend-mode: screen;
+}
+
+/* Hairline grid, radially masked so it fades out toward the edges (§1). */
+@utility fx-grid {
+  z-index: 2;
+  background-image:
+    linear-gradient(var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline) 1px, transparent 1px);
+  background-size: 52px 52px;
+  --fx-grid-mask: radial-gradient(
+    ellipse 80% 70% at 50% 30%,
+    #000 40%,
+    transparent 100%
+  );
+  -webkit-mask-image: var(--fx-grid-mask);
+  mask-image: var(--fx-grid-mask);
+}
+
+/* Dual-gradient scrim — the legibility guarantee (§8). Darkens toward the
+   bottom and left where hero copy lands so text clears AA over any photo. */
+@utility fx-scrim {
+  z-index: 3;
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-ink) 3%,
+      color-mix(in srgb, var(--color-ink) 32%, transparent) 40%,
+      color-mix(in srgb, var(--color-ink) 86%, transparent) 100%
+    ),
+    linear-gradient(
+      90deg,
+      var(--color-ink) 6%,
+      color-mix(in srgb, var(--color-ink) 15%, transparent) 60%,
+      transparent 85%
+    );
 }
 
 /*
