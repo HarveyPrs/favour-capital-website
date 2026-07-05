@@ -149,6 +149,30 @@
       transform: translate(-40px, 26px) scale(1.06);
     }
   }
+
+  /* ---- Cut shine (§6) — a slow light that glides along the folded-corner
+     paper cut, then rests. Ambient-tier loop, `motion-safe:`-gated so it
+     pauses under reduced motion (§8). */
+  --animate-cut-shine: cut-shine 15s var(--ease-in-out) infinite;
+
+  @keyframes cut-shine {
+    0% {
+      background-position: 150% 0;
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    28% {
+      background-position: -50% 0;
+      opacity: 1;
+    }
+    34%,
+    100% {
+      background-position: -50% 0;
+      opacity: 0;
+    }
+  }
 }
 
 /* Desktop type scale (§3) — ≥768px matches Tailwind's `md` breakpoint. */

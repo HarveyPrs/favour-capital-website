@@ -155,6 +155,7 @@ Named tokens — use everywhere for consistency. All motion respects `prefers-re
 - **Hover-lift** (buttons/cards) — `y: -3px` + deepen shadow, `dur-fast`. `active`: `y: -1px`.
 - **Ken-Burns** (hero photo) — `scale 1→1.08`, `dur-ambient`, `alternate`, infinite. Exposed as the `animate-ken-burns` utility (`--animate-ken-burns`, 26s).
 - **Glow drift** — translate/scale blobs slowly, `mix-blend-mode: screen`, infinite. Exposed as `animate-drift-slow` / `animate-drift-slower` (`--animate-drift-*`, 15s / 18s). All three are `motion-safe:`-gated so they drop under reduced motion.
+- **Cut shine** — a bright band sweeps once along the folded-corner cut, then rests, on a slow 15s ambient loop. Exposed as `animate-cut-shine` (`--animate-cut-shine`), `motion-safe:`-gated.
 - **Pulse dot** — expanding box-shadow ring, 2s infinite (live/status indicator).
 - **Bob** (hero glass tombstones) — `translateY 0→-8px→0`, `6s`, `ease-inout`, infinite. Exposed as the `animate-bob` utility (`--animate-bob` token); a stack of cards drifts out of phase via a per-card `animationDelay` (0 / .55 / 1.1s). `motion-safe:`-gated, so it's dropped under reduced motion.
 
@@ -200,7 +201,7 @@ Handles vertical rhythm, container, optional dark/light variant, optional backgr
 
 ### Background layers (`<BackgroundLayers>`)
 
-Reusable layered backdrop for dark immersive sections. Stack z-order: photo (`opacity .62`, Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → content. The diagonal is a **folded-corner motif** in the top-left: a subtle brand-tinted glass wedge (`screen`) for depth, a soft light bloom along the fold, and two orange+blue lines that **fade out at both tips** where they meet the edges — so the accent wraps the corner of the poster rather than reading as applied bars.
+Reusable layered backdrop for dark immersive sections. Stack z-order: photo (`opacity .62`, Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → content. The diagonal is a **folded / paper-cut corner** in the top-left: a subtle brand-tinted glass flap (`screen`) for depth, and a crisp diagonal cut — two lit orange+blue lips over a drop shadow — that **fades out at both tips** where it meets the edges, so it wraps the corner of the poster rather than reading as applied bars. A slow light glides along the cut (`animate-cut-shine`, `motion-safe:`-gated).
 
 - Props: `layers?` (subset of `photo | glow | grid | scrim | diagonal`, default all — photo auto-skips with no image), `image?`, `imageAlt?`, `imagePosition?`, `priority?`, `intensity?` (`subtle | normal | bold` — scales photo + glow opacity only, never the scrim, so the AA guarantee is constant).
 - Server component: pure CSS + `next/image`, `aria-hidden`, non-interactive. The composite geometry/masks live as the `fx-blob` / `fx-grid` / `fx-scrim` utilities in `globals.css` (all color from tokens); ambient loops use the `animate-ken-burns` / `animate-drift-*` tokens, `motion-safe:`-gated (§8).

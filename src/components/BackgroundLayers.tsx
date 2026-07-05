@@ -118,45 +118,55 @@ export function BackgroundLayers({
       {has("scrim") && <div className="fx-scrim absolute inset-0" />}
 
       {has("diagonal") && (
-        // Folded-corner motif (§6): a brand ribbon that wraps the top-left
-        // corner. A subtle brand-tinted glass wedge (depth) + a soft light
-        // bloom along the fold (glow) + two crisp lines that fade out at both
-        // tips where they meet the edges, so it reads as part of the poster
-        // rather than applied bars. Fixed-size corner ornament, clipped.
-        <div className="absolute top-0 left-0 z-[4] h-[190px] w-[190px] overflow-hidden">
+        // Folded / paper-cut corner (§6): a brand-tinted glass flap in the
+        // top-left with a crisp diagonal cut edge (lit orange+blue lips over a
+        // shadow for paper depth) and a slow light that glides along the cut.
+        // Everything rides a rotated "fold axis" so it stays a true 45°; the
+        // axis is masked so the cut fades out at both tips. Clipped, fixed size.
+        <div className="absolute top-0 left-0 z-[4] h-[240px] w-[240px] overflow-hidden">
+          {/* folded flap — subtle brand glass wedge */}
           <div
             className="absolute inset-0 mix-blend-screen"
             style={{
               clipPath: "polygon(0 0, 0 100%, 100% 0)",
               background:
-                "linear-gradient(135deg, color-mix(in srgb, var(--color-brand-orange) 22%, transparent), color-mix(in srgb, var(--color-brand-blue) 18%, transparent) 65%, transparent)",
+                "linear-gradient(135deg, color-mix(in srgb, var(--color-brand-orange) 24%, transparent), color-mix(in srgb, var(--color-brand-blue) 20%, transparent) 62%, transparent)",
             }}
           />
+          {/* fold axis: bottom edge sits on the diagonal; tips fade out */}
           <div
-            className="absolute bottom-0 left-0 h-2.5 w-[300px] origin-bottom-left -rotate-45 blur-md mix-blend-screen"
+            className="absolute bottom-0 left-0 h-4 w-[340px] origin-bottom-left -rotate-45"
             style={{
-              background:
-                "linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-brand-orange) 60%, transparent) 25%, color-mix(in srgb, var(--color-brand-blue) 55%, transparent) 60%, transparent 90%)",
+              WebkitMaskImage:
+                "linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)",
+              maskImage:
+                "linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)",
             }}
-          />
-          <span
-            className="absolute bottom-2 -left-2 h-[2px] w-[269px] origin-bottom-left -rotate-45"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent, var(--color-brand-blue) 14%, var(--color-brand-blue) 86%, transparent)",
-              boxShadow:
-                "0 0 8px 0 color-mix(in srgb, var(--color-brand-blue) 55%, transparent)",
-            }}
-          />
-          <span
-            className="absolute bottom-0 left-0 h-[2px] w-[269px] origin-bottom-left -rotate-45"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent, var(--color-brand-orange) 12%, var(--color-brand-orange) 88%, transparent)",
-              boxShadow:
-                "0 0 10px 0 color-mix(in srgb, var(--color-brand-orange) 60%, transparent)",
-            }}
-          />
+          >
+            {/* soft bloom under the cut */}
+            <div
+              className="absolute bottom-0 left-0 h-3 w-full blur-md mix-blend-screen"
+              style={{
+                background:
+                  "linear-gradient(90deg, color-mix(in srgb, var(--color-brand-orange) 50%, transparent), color-mix(in srgb, var(--color-brand-blue) 45%, transparent))",
+              }}
+            />
+            {/* the cut: two lit brand lips over a drop shadow (paper depth) */}
+            <div className="absolute bottom-[7px] left-0 h-[2px] w-full bg-brand-blue" />
+            <div
+              className="absolute bottom-[3px] left-0 h-[2px] w-full bg-brand-orange"
+              style={{ boxShadow: "0 2px 3px 0 rgb(0 0 0 / 0.5)" }}
+            />
+            {/* light that slides along the cut */}
+            <div
+              className="absolute bottom-[2px] left-0 h-[4px] w-full mix-blend-screen motion-safe:animate-cut-shine"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent 44%, color-mix(in srgb, white 80%, transparent) 50%, transparent 56%)",
+                backgroundSize: "220% 100%",
+              }}
+            />
+          </div>
         </div>
       )}
     </div>
