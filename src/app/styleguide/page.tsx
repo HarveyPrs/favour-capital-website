@@ -447,7 +447,7 @@ export default function StyleguidePage() {
 
         {/* Full stack */}
         <div className="relative isolate flex min-h-[440px] flex-col justify-end overflow-hidden rounded-lg border border-hairline bg-ink">
-          <BackgroundLayers image="/singapore.jpg" priority />
+          <BackgroundLayers image="/singapore.webp" priority />
           <div className="relative z-10 max-w-xl p-8">
             <span className="inline-flex items-center gap-2 rounded-pill border border-brand-orange/40 bg-brand-orange/13 px-3.5 py-2 text-overline font-semibold uppercase text-text-accent">
               All layers · intensity normal
@@ -467,10 +467,10 @@ export default function StyleguidePage() {
         {/* Variants */}
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           <BgDemo title="intensity: subtle" note="Dialed-back photo + glow.">
-            <BackgroundLayers image="/singapore.jpg" intensity="subtle" />
+            <BackgroundLayers image="/singapore.webp" intensity="subtle" />
           </BgDemo>
           <BgDemo title="intensity: bold" note="Brighter photo + glow.">
-            <BackgroundLayers image="/singapore.jpg" intensity="bold" />
+            <BackgroundLayers image="/singapore.webp" intensity="bold" />
           </BgDemo>
           <BgDemo
             title="no photo"
@@ -482,7 +482,7 @@ export default function StyleguidePage() {
             title="photo + scrim only"
             note="Minimal stack — just the legibility scrim over the photo."
           >
-            <BackgroundLayers image="/singapore.jpg" layers={["photo", "scrim"]} />
+            <BackgroundLayers image="/singapore.webp" layers={["photo", "scrim"]} />
           </BgDemo>
         </div>
       </section>
