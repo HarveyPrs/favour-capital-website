@@ -118,9 +118,32 @@ export function BackgroundLayers({
       {has("scrim") && <div className="fx-scrim absolute inset-0" />}
 
       {has("diagonal") && (
-        <div className="absolute top-[-40px] left-[-40px] z-[4] h-60 w-60">
-          <span className="absolute top-6 h-[3px] w-[340px] origin-left rotate-45 bg-brand-orange" />
-          <span className="absolute top-9 h-[3px] w-[340px] origin-left rotate-45 bg-brand-blue" />
+        <div className="absolute top-[-40px] left-[-40px] z-[4] h-72 w-72">
+          {/* Soft corner sheen (§6) — a faint diagonal lift so the accent reads
+              as a natural fold in the photo rather than applied bars. */}
+          <div
+            className="absolute inset-0 mix-blend-screen"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--color-hairline), transparent 42%)",
+            }}
+          />
+          {/* Brand lines fade toward the interior — no hard end floating
+              mid-frame — so they blend into the background from the corner. */}
+          <span
+            className="absolute top-6 left-0 h-[2px] w-[416px] origin-left rotate-45"
+            style={{
+              background:
+                "linear-gradient(90deg, var(--color-brand-orange), transparent 76%)",
+            }}
+          />
+          <span
+            className="absolute top-9 left-0 h-[2px] w-[416px] origin-left rotate-45 opacity-80"
+            style={{
+              background:
+                "linear-gradient(90deg, var(--color-brand-blue), transparent 72%)",
+            }}
+          />
         </div>
       )}
     </div>
