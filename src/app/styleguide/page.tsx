@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { PrimitivesShowcase } from "./PrimitivesShowcase";
+
 export const metadata: Metadata = {
   title: "Styleguide — Favour Capital",
   description: "Token reference for the Favour Capital design system.",
@@ -401,6 +403,25 @@ export default function StyleguidePage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Primitives & motion utilities (FAV-8) */}
+      <section className="mt-20">
+        <h2 className="mb-2 text-h2 font-display font-bold">
+          Primitives &amp; motion utilities
+        </h2>
+        <p className="mb-8 text-body-sm text-text-muted">
+          The base building blocks every page composes from —{" "}
+          <code className="text-text-accent">Section</code>,{" "}
+          <code className="text-text-accent">Container</code>,{" "}
+          <code className="text-text-accent">Button</code>,{" "}
+          <code className="text-text-accent">Eyebrow</code> — plus the{" "}
+          <code className="text-text-accent">Reveal</code>,{" "}
+          <code className="text-text-accent">useCountUp</code> and hover-lift
+          motion helpers. All respect{" "}
+          <code className="text-text-accent">prefers-reduced-motion</code>.
+        </p>
+        <PrimitivesShowcase />
       </section>
     </main>
   );

@@ -3,6 +3,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Manrope, Sora } from "next/font/google";
 
+import { MotionProvider } from "@/components/MotionProvider";
+
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
@@ -33,7 +35,7 @@ export default function RootLayout({
       className={`${sora.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-ink font-body text-text-primary">
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );
