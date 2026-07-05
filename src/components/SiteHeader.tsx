@@ -196,6 +196,7 @@ export function SiteHeader() {
 
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   // Scroll state + section-tone detection in one passive handler.
   useEffect(() => {
@@ -248,6 +249,28 @@ export function SiteHeader() {
       document.body.style.overflow = prev;
     };
   }, [mobileOpen]);
+
+  // Keep Tab focus inside the open overlay so it can't land on the header /
+  // page behind it (the full-screen menu is a modal surface).
+  const trapFocus = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "Tab") return;
+    const root = overlayRef.current;
+    if (!root) return;
+    const focusable = root.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled])',
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey && active === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && active === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, []);
 
   const barBackground = scrolled
     ? onLight
@@ -327,6 +350,8 @@ export function SiteHeader() {
         {mobileOpen && (
           <motion.div
             id="mobile-menu"
+            ref={overlayRef}
+            onKeyDown={trapFocus}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
