@@ -118,18 +118,43 @@ export function BackgroundLayers({
       {has("scrim") && <div className="fx-scrim absolute inset-0" />}
 
       {has("diagonal") && (
-        // Corner banner (§6): a thin brand ribbon that wraps the top-left
-        // corner edge-to-edge — pinned to the left edge, rotated 45° so it
-        // crosses to the top edge, then clipped by the container so it reads
-        // as part of the poster rather than two applied bars. The `top`
-        // anchor is a percentage so the wrap scales with the panel.
-        <div className="absolute inset-0 z-[4] overflow-hidden">
+        // Folded-corner motif (§6): a brand ribbon that wraps the top-left
+        // corner. A subtle brand-tinted glass wedge (depth) + a soft light
+        // bloom along the fold (glow) + two crisp lines that fade out at both
+        // tips where they meet the edges, so it reads as part of the poster
+        // rather than applied bars. Fixed-size corner ornament, clipped.
+        <div className="absolute top-0 left-0 z-[4] h-[190px] w-[190px] overflow-hidden">
           <div
-            className="absolute top-[40%] left-0 h-3 w-[300%] origin-left -rotate-45"
+            className="absolute inset-0 mix-blend-screen"
             style={{
-              background: "linear-gradient(var(--color-hairline), transparent)",
-              borderTop: "2px solid var(--color-brand-blue)",
-              borderBottom: "2px solid var(--color-brand-orange)",
+              clipPath: "polygon(0 0, 0 100%, 100% 0)",
+              background:
+                "linear-gradient(135deg, color-mix(in srgb, var(--color-brand-orange) 22%, transparent), color-mix(in srgb, var(--color-brand-blue) 18%, transparent) 65%, transparent)",
+            }}
+          />
+          <div
+            className="absolute bottom-0 left-0 h-2.5 w-[300px] origin-bottom-left -rotate-45 blur-md mix-blend-screen"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-brand-orange) 60%, transparent) 25%, color-mix(in srgb, var(--color-brand-blue) 55%, transparent) 60%, transparent 90%)",
+            }}
+          />
+          <span
+            className="absolute bottom-2 -left-2 h-[2px] w-[269px] origin-bottom-left -rotate-45"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, var(--color-brand-blue) 14%, var(--color-brand-blue) 86%, transparent)",
+              boxShadow:
+                "0 0 8px 0 color-mix(in srgb, var(--color-brand-blue) 55%, transparent)",
+            }}
+          />
+          <span
+            className="absolute bottom-0 left-0 h-[2px] w-[269px] origin-bottom-left -rotate-45"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, var(--color-brand-orange) 12%, var(--color-brand-orange) 88%, transparent)",
+              boxShadow:
+                "0 0 10px 0 color-mix(in srgb, var(--color-brand-orange) 60%, transparent)",
             }}
           />
         </div>

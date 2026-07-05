@@ -200,7 +200,7 @@ Handles vertical rhythm, container, optional dark/light variant, optional backgr
 
 ### Background layers (`<BackgroundLayers>`)
 
-Reusable layered backdrop for dark immersive sections. Stack z-order: photo (`opacity .62`, Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → content. Diagonal orange+blue lines = brand motif, top-left corner: hairline lines that **fade to transparent** toward the interior (over a faint `screen` corner sheen) so the accent reads as a natural fold in the photo, not applied bars.
+Reusable layered backdrop for dark immersive sections. Stack z-order: photo (`opacity .62`, Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → content. The diagonal is a **folded-corner motif** in the top-left: a subtle brand-tinted glass wedge (`screen`) for depth, a soft light bloom along the fold, and two orange+blue lines that **fade out at both tips** where they meet the edges — so the accent wraps the corner of the poster rather than reading as applied bars.
 
 - Props: `layers?` (subset of `photo | glow | grid | scrim | diagonal`, default all — photo auto-skips with no image), `image?`, `imageAlt?`, `imagePosition?`, `priority?`, `intensity?` (`subtle | normal | bold` — scales photo + glow opacity only, never the scrim, so the AA guarantee is constant).
 - Server component: pure CSS + `next/image`, `aria-hidden`, non-interactive. The composite geometry/masks live as the `fx-blob` / `fx-grid` / `fx-scrim` utilities in `globals.css` (all color from tokens); ambient loops use the `animate-ken-burns` / `animate-drift-*` tokens, `motion-safe:`-gated (§8).
