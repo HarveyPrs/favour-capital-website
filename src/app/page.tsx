@@ -2,6 +2,7 @@ import { Capabilities } from "@/components/Capabilities";
 import { Differentiation } from "@/components/Differentiation";
 import { Hero } from "@/components/Hero";
 import { InvestorNetwork } from "@/components/InvestorNetwork";
+import { RepresentativeDeals } from "@/components/RepresentativeDeals";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Capabilities />
       <Differentiation />
       <InvestorNetwork />
+      <RepresentativeDeals />
     </main>
   );
 }
