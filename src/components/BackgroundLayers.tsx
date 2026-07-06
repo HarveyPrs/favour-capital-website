@@ -16,17 +16,22 @@ const ALL_LAYERS: readonly BackgroundLayer[] = [
 type Intensity = "subtle" | "normal" | "bold";
 
 /**
- * Per-intensity opacity for the ambient (photo + glow) layers. The scrim,
- * grid and diagonal are unaffected so legibility (§8) is constant regardless
- * of intensity — turning the ambience up never weakens the contrast guarantee.
+ * Per-intensity opacity for the ambient layers. Dark is the default (§2.7,
+ * §6): a full-bleed ink `veil` sits over the photo + glow so the backdrop
+ * reads as a moody dark surface with the image popping through, rather than a
+ * lit photo. `normal` is the house default; `subtle` sinks the photo further
+ * into the dark, `bold` pulls it forward (lighter veil). The scrim + grid ride
+ * underneath, so the AA legibility guarantee (§8) only ever strengthens as the
+ * veil deepens — never the other way. Light surfaces stay opt-in via the
+ * `.tone-light` scope (they don't use this backdrop).
  */
 const INTENSITY: Record<
   Intensity,
-  { photo: number; glowBlue: number; glowOrange: number }
+  { photo: number; glowBlue: number; glowOrange: number; veil: number }
 > = {
-  subtle: { photo: 0.5, glowBlue: 0.34, glowOrange: 0.26 },
-  normal: { photo: 0.62, glowBlue: 0.5, glowOrange: 0.4 },
-  bold: { photo: 0.72, glowBlue: 0.62, glowOrange: 0.5 },
+  subtle: { photo: 0.42, glowBlue: 0.28, glowOrange: 0.22, veil: 0.42 },
+  normal: { photo: 0.6, glowBlue: 0.36, glowOrange: 0.28, veil: 0.26 },
+  bold: { photo: 0.64, glowBlue: 0.52, glowOrange: 0.42, veil: 0.14 },
 };
 
 type BackgroundLayersProps = {
@@ -168,6 +173,17 @@ export function BackgroundLayers({
             />
           </div>
         </div>
+      )}
+
+      {/* Dark veil (§6) — full-bleed ink wash that makes the backdrop read as a
+          dark surface with the photo popping through, scaled by intensity. Sits
+          above the ambient layers, below the section content (the sibling
+          `relative z-10` slot), so it dims the backdrop and never the copy. */}
+      {opacity.veil > 0 && (
+        <div
+          className="absolute inset-0 z-[5] bg-ink"
+          style={{ opacity: opacity.veil }}
+        />
       )}
     </div>
   );
