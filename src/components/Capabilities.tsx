@@ -4,6 +4,7 @@ import { CapabilityCard } from "@/components/CapabilityCard";
 import { Eyebrow } from "@/components/Eyebrow";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Section } from "@/components/Section";
+import { StatBlock } from "@/components/StatBlock";
 
 /* Line icons (24px, `currentColor` stroke) — brand-neutral so the accent tile
    supplies the color. Kept inline; the project has no icon dependency. */
@@ -69,6 +70,18 @@ const capabilities: {
   },
 ];
 
+/**
+ * Track record strip (moved from the hero) — leads the services description
+ * with proof. Figures marked `placeholder` keep the trailing `*` until real
+ * numbers are confirmed (§6, SCOPE.md decisions-you-owe).
+ */
+const stats = [
+  { value: 850, prefix: "$", suffix: "M+", label: "Capital raised", placeholder: true },
+  { value: 40, suffix: "+", label: "Transactions", placeholder: true },
+  { value: 15, suffix: "+", label: "Markets covered" },
+  { value: 500, suffix: "+", label: "Investor network", placeholder: true },
+] as const;
+
 export function Capabilities() {
   return (
     <Section tone="light">
@@ -77,7 +90,19 @@ export function Capabilities() {
         <h2 className="mt-5 font-display text-display-lg font-extrabold text-text-primary">
           Comprehensive financial advisory
         </h2>
-        <p className="mt-4 text-body-lg text-text-secondary">
+      </Reveal>
+
+      {/* Track record — reflows 4 → 2 columns on mobile. */}
+      <RevealGroup className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-y border-hairline py-8 md:mt-10 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <RevealItem key={stat.label}>
+            <StatBlock {...stat} />
+          </RevealItem>
+        ))}
+      </RevealGroup>
+
+      <Reveal className="mt-8 max-w-2xl md:mt-10">
+        <p className="text-body-lg text-text-secondary">
           We partner with industry leaders across tech and consumer to execute
           successful capital raising and M&amp;A transactions — onboarding the
           right institutional and strategic investors so our clients can scale

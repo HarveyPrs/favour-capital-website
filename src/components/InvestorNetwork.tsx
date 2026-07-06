@@ -3,7 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useId, useState } from "react";
 
-import { BackgroundLayers } from "@/components/BackgroundLayers";
 import { Eyebrow } from "@/components/Eyebrow";
 import {
   MAP_DOTS,
@@ -113,10 +112,7 @@ export function InvestorNetwork() {
   const hasActive = activeNode !== null;
 
   return (
-    <Section
-      tone="dark"
-      bg={<BackgroundLayers layers={["glow", "grid", "scrim"]} intensity="subtle" />}
-    >
+    <Section tone="light">
       <Reveal className="max-w-2xl">
         <Eyebrow>Global reach</Eyebrow>
         <h2 className="mt-5 font-display text-display-lg font-extrabold text-text-primary">
@@ -131,7 +127,7 @@ export function InvestorNetwork() {
 
       <Reveal className="mt-10 md:mt-14">
         {/* Map frame — the SVG is decorative; the legend below carries the data. */}
-        <figure className="relative overflow-hidden rounded-lg border border-hairline bg-surface-1/40 p-3 sm:p-5">
+        <figure className="relative overflow-hidden rounded-lg border border-hairline bg-surface-light-2 p-3 sm:p-5">
           <div className="relative">
             <svg
               viewBox={`0 0 ${VB_W} ${VB_H}`}
@@ -146,8 +142,8 @@ export function InvestorNetwork() {
                 </radialGradient>
               </defs>
 
-              {/* Halftone land */}
-              <g className="fill-white" opacity={0.12}>
+              {/* Halftone land — Favour brand blue on the light panel */}
+              <g className="fill-brand-blue" opacity={0.22}>
                 {MAP_DOTS.map(([x, y], i) => (
                   <circle key={i} cx={x} cy={y} r={1.6} />
                 ))}
@@ -169,8 +165,8 @@ export function InvestorNetwork() {
                         isActive
                           ? "stroke-brand-orange/90 [stroke-width:1.6]"
                           : hasActive
-                            ? "stroke-blue-400/10 [stroke-width:1]"
-                            : "stroke-blue-400/30 [stroke-width:1]",
+                            ? "stroke-brand-blue/15 [stroke-width:1]"
+                            : "stroke-brand-blue/40 [stroke-width:1]",
                       )}
                       initial={{ pathLength: prefersReducedMotion ? 1 : 0 }}
                       whileInView={{ pathLength: 1 }}
@@ -224,7 +220,7 @@ export function InvestorNetwork() {
                       r={n.hub ? 3.4 : 2.6}
                       className={cn(
                         "transition-colors duration-(--dur-base) motion-reduce:transition-none",
-                        lit ? "fill-orange-300" : "fill-blue-300",
+                        lit ? "fill-brand-orange" : "fill-brand-blue",
                       )}
                     />
                   </g>
@@ -241,10 +237,10 @@ export function InvestorNetwork() {
                 <span
                   key={n.id}
                   className={cn(
-                    "pointer-events-none absolute z-10 whitespace-nowrap rounded-pill border px-2.5 py-1 text-label font-semibold transition-opacity duration-(--dur-fast) motion-reduce:transition-none",
+                    "pointer-events-none absolute z-10 whitespace-nowrap rounded-pill border bg-white px-2.5 py-1 text-label font-semibold shadow-sm transition-opacity duration-(--dur-fast) motion-reduce:transition-none",
                     n.id === activeId
-                      ? "border-brand-orange/50 bg-ink/85 text-text-primary"
-                      : "border-hairline bg-ink/80 text-text-secondary",
+                      ? "border-brand-orange/60 text-text-primary"
+                      : "border-hairline text-text-secondary",
                     shown ? "opacity-100" : "opacity-0",
                   )}
                   style={{
@@ -294,7 +290,7 @@ export function InvestorNetwork() {
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/60",
                         n.id === activeId
                           ? "border-brand-orange/50 bg-brand-orange/13 text-text-primary"
-                          : "border-hairline bg-white/[0.03] text-text-secondary hover:border-hairline-2 hover:text-text-primary",
+                          : "border-hairline bg-white text-text-secondary hover:border-brand-blue/40 hover:text-text-primary",
                       )}
                     >
                       {n.name}

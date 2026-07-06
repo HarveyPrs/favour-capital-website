@@ -4,7 +4,6 @@ import { Container } from "@/components/Container";
 import { DealCard } from "@/components/DealCard";
 import { Eyebrow } from "@/components/Eyebrow";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
-import { StatBlock } from "@/components/StatBlock";
 
 /** Representative deals (SCOPE.md) — real, confirmed tombstones. */
 const deals = [
@@ -26,17 +25,6 @@ const deals = [
     amount: "US$34M",
     investors: "Navegar · East Ventures",
   },
-] as const;
-
-/**
- * Hero stat strip. Figures marked `placeholder` carry a trailing `*` until
- * real numbers are confirmed (§6, SCOPE.md decisions-you-owe).
- */
-const stats = [
-  { value: 850, prefix: "$", suffix: "M+", label: "Capital raised", placeholder: true },
-  { value: 40, suffix: "+", label: "Transactions", placeholder: true },
-  { value: 15, suffix: "+", label: "Markets covered" },
-  { value: 500, suffix: "+", label: "Investor network", placeholder: true },
 ] as const;
 
 /**
@@ -93,19 +81,6 @@ export function Hero() {
             {deals.map((deal, i) => (
               <RevealItem key={deal.company}>
                 <DealCard bob bobDelay={i * 0.55} {...deal} />
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </Container>
-      </div>
-
-      {/* Stat strip — reflows 4 → 2 columns on mobile. */}
-      <div className="relative z-10 pb-10 md:pb-12">
-        <Container>
-          <RevealGroup className="grid grid-cols-2 gap-x-6 gap-y-6 border-t border-hairline pt-6 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <RevealItem key={stat.label}>
-                <StatBlock {...stat} />
               </RevealItem>
             ))}
           </RevealGroup>

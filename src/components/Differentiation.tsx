@@ -93,7 +93,8 @@ export function Differentiation() {
       tone="dark"
       bg={
         <BackgroundLayers
-          layers={["glow", "grid", "scrim"]}
+          image="/singapore.webp"
+          layers={["photo", "glow", "grid", "scrim"]}
           intensity="subtle"
         />
       }
