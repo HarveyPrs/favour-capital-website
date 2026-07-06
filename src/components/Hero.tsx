@@ -3,7 +3,7 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { DealCard } from "@/components/DealCard";
 import { Eyebrow } from "@/components/Eyebrow";
-import { RevealGroup, RevealItem } from "@/components/Reveal";
+import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 
 /** Representative deals (SCOPE.md) — real, confirmed tombstones. */
 const deals = [
@@ -47,8 +47,12 @@ export function Hero() {
 
       {/* Hero body — headline + CTAs beside the floating deal tombstones. */}
       <div className="relative z-10 flex flex-1 items-center pt-24 md:pt-28">
-        <Container className="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr] lg:gap-12">
-          <RevealGroup>
+        {/* Three blocks in DOM order text → deals → CTAs so a single-column
+            mobile grid stacks the deal tombstones above the buttons. On lg the
+            explicit column/row placement restores text + CTAs on the left with
+            the deals beside them on the right. */}
+        <Container className="grid gap-8 lg:grid-cols-[1.3fr_1fr] lg:items-start lg:gap-x-12">
+          <RevealGroup className="lg:col-start-1 lg:row-start-1">
             <RevealItem>
               <Eyebrow pulse>Boutique investment bank · Singapore</Eyebrow>
             </RevealItem>
@@ -65,25 +69,26 @@ export function Hero() {
                 investors, and running the entire transaction.
               </p>
             </RevealItem>
-            <RevealItem>
-              <div className="mt-8 flex flex-wrap gap-3.5">
-                <Button href="/get-in-touch" variant="primary">
-                  Get in touch
-                </Button>
-                <Button href="/services-and-clients" variant="secondary">
-                  View our deals →
-                </Button>
-              </div>
-            </RevealItem>
           </RevealGroup>
 
-          <RevealGroup className="flex flex-col gap-3.5">
+          <RevealGroup className="flex flex-col gap-3.5 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center">
             {deals.map((deal, i) => (
               <RevealItem key={deal.company}>
                 <DealCard bob bobDelay={i * 0.55} {...deal} />
               </RevealItem>
             ))}
           </RevealGroup>
+
+          <Reveal className="lg:col-start-1 lg:row-start-2">
+            <div className="flex flex-wrap gap-3.5">
+              <Button href="/get-in-touch" variant="primary">
+                Get in touch
+              </Button>
+              <Button href="/services-and-clients" variant="secondary">
+                View our deals →
+              </Button>
+            </div>
+          </Reveal>
         </Container>
       </div>
     </section>
