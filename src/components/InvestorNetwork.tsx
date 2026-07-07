@@ -121,7 +121,7 @@ export function InvestorNetwork() {
         </h2>
         <p className="mt-4 text-body-lg text-text-secondary">
           From our Singapore base we connect Asia&apos;s industry leaders to the
-          right capital across 18 markets — spanning Asia, the Middle East,
+          right capital across 15 markets — spanning Asia, the Middle East,
           Europe, Oceania and North America.
         </p>
       </Reveal>
@@ -266,7 +266,7 @@ export function InvestorNetwork() {
       <div className="mt-10 grid gap-10 md:mt-12 md:grid-cols-[minmax(0,15rem)_1fr] md:gap-14">
         <Reveal className="flex flex-row gap-10 md:flex-col md:gap-8">
           <StatBlock value={500} suffix="+" label="Investors in our network" placeholder />
-          <StatBlock value={18} suffix="+" label="Markets across five regions" />
+          <StatBlock value={15} suffix="+" label="Markets across five regions" />
         </Reveal>
 
         <Reveal>
