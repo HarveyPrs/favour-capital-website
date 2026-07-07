@@ -13,6 +13,7 @@ import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { StatBlock } from "@/components/StatBlock";
 import { cn } from "@/lib/cn";
+import { ease } from "@/lib/motion";
 
 /**
  * Homepage investor network (FAV-17) — visualizes Favour Capital's global
@@ -168,12 +169,16 @@ export function InvestorNetwork() {
                             ? "stroke-brand-blue/15 [stroke-width:1]"
                             : "stroke-brand-blue/40 [stroke-width:1]",
                       )}
-                      initial={{ pathLength: prefersReducedMotion ? 1 : 0 }}
+                      // Preference-independent `initial` so server and client
+                      // render the same first frame (no hydration mismatch) —
+                      // reduced motion is honored by collapsing the transition
+                      // to 0 below, which snaps the arc in on scroll (§8).
+                      initial={{ pathLength: 0 }}
                       whileInView={{ pathLength: 1 }}
                       viewport={{ once: true, margin: "-10% 0px" }}
                       transition={{
                         duration: prefersReducedMotion ? 0 : 1.1,
-                        ease: "easeOut",
+                        ease: ease.out,
                         delay: prefersReducedMotion ? 0 : 0.15 + i * 0.06,
                       }}
                     />

@@ -22,6 +22,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Claude Code's ephemeral git worktrees are full nested checkouts — never
+    // lint them (they'd flood `pnpm lint` with node_modules/build artifacts).
+    ".claude/**",
   ]),
 ]);
 
