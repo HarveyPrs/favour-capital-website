@@ -1,3 +1,17 @@
+import { Capabilities } from "@/components/Capabilities";
+import { Differentiation } from "@/components/Differentiation";
+import { Hero } from "@/components/Hero";
+import { InvestorNetwork } from "@/components/InvestorNetwork";
+import { RepresentativeDeals } from "@/components/RepresentativeDeals";
+
 export default function Home() {
-  return null;
+  return (
+    <main>
+      <Hero />
+      <Capabilities />
+      <Differentiation />
+      <InvestorNetwork />
+      <RepresentativeDeals />
+    </main>
+  );
 }

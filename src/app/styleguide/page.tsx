@@ -1,4 +1,9 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
+
+import { BackgroundLayers } from "@/components/BackgroundLayers";
+
+import { PrimitivesShowcase } from "./PrimitivesShowcase";
 
 export const metadata: Metadata = {
   title: "Styleguide — Favour Capital",
@@ -125,6 +130,27 @@ function SwatchCard({
       <div className={`bg-surface-2 p-3 ${textClassName}`}>
         <p className="text-label font-semibold">{name}</p>
         <p className="text-body-sm text-text-muted">{hex}</p>
+      </div>
+    </div>
+  );
+}
+
+/** A single tile framing a `<BackgroundLayers>` variant with a caption. */
+function BgDemo({
+  title,
+  note,
+  children,
+}: {
+  title: string;
+  note: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="relative isolate flex min-h-60 flex-col justify-end overflow-hidden rounded-lg border border-hairline bg-ink">
+      {children}
+      <div className="relative z-10 p-6">
+        <p className="text-label font-semibold text-text-primary">{title}</p>
+        <p className="mt-1 text-body-sm text-text-secondary">{note}</p>
       </div>
     </div>
   );
@@ -401,6 +427,86 @@ export default function StyleguidePage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Background layer system (FAV-12) */}
+      <section className="mt-20">
+        <h2 className="mb-2 text-h2 font-display font-bold">
+          Background layers
+        </h2>
+        <p className="mb-8 max-w-2xl text-body-sm text-text-muted">
+          Composable backdrop for dark immersive sections (§6):{" "}
+          <code className="text-text-accent">photo</code> (Ken-Burns) →{" "}
+          <code className="text-text-accent">glow</code> blobs (screen blend,
+          drift) → <code className="text-text-accent">grid</code> (masked) →{" "}
+          <code className="text-text-accent">scrim</code> (dual gradient) →{" "}
+          <code className="text-text-accent">diagonal</code> accent. Pick layers
+          and intensity via props; the scrim keeps text AA-legible over any
+          photo, and every ambient loop pauses under reduced motion.
+        </p>
+
+        {/* Full stack */}
+        <div className="relative isolate flex min-h-[440px] flex-col justify-end overflow-hidden rounded-lg border border-hairline bg-ink">
+          <BackgroundLayers image="/singapore.webp" priority />
+          <div className="relative z-10 max-w-xl p-8">
+            <span className="inline-flex items-center gap-2 rounded-pill border border-brand-orange/40 bg-brand-orange/13 px-3.5 py-2 text-overline font-semibold uppercase text-text-accent">
+              All layers · intensity normal
+            </span>
+            <h3 className="mt-4 text-display-lg font-display font-extrabold text-text-primary">
+              Capital raising and M&amp;A advisory for{" "}
+              <span className="grad-headline">Asia&apos;s industry leaders</span>
+            </h3>
+            <p className="mt-3 text-body text-text-secondary">
+              White and secondary text stay clear of the AA threshold over the
+              scrimmed photo — the dual-gradient scrim is the legibility
+              guarantee, independent of intensity.
+            </p>
+          </div>
+        </div>
+
+        {/* Variants */}
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <BgDemo title="intensity: subtle" note="Dialed-back photo + glow.">
+            <BackgroundLayers image="/singapore.webp" intensity="subtle" />
+          </BgDemo>
+          <BgDemo title="intensity: bold" note="Brighter photo + glow.">
+            <BackgroundLayers image="/singapore.webp" intensity="bold" />
+          </BgDemo>
+          <BgDemo
+            title="no photo"
+            note="glow + grid + scrim + diagonal on the ink base."
+          >
+            <BackgroundLayers layers={["glow", "grid", "scrim", "diagonal"]} />
+          </BgDemo>
+          <BgDemo
+            title="photo + scrim only"
+            note="Minimal stack — just the legibility scrim over the photo."
+          >
+            <BackgroundLayers image="/singapore.webp" layers={["photo", "scrim"]} />
+          </BgDemo>
+        </div>
+      </section>
+
+      {/* Primitives, motion utilities & core components (FAV-8 / FAV-11) */}
+      <section className="mt-20">
+        <h2 className="mb-2 text-h2 font-display font-bold">
+          Primitives, motion &amp; core components
+        </h2>
+        <p className="mb-8 text-body-sm text-text-muted">
+          The base building blocks every page composes from —{" "}
+          <code className="text-text-accent">Section</code>,{" "}
+          <code className="text-text-accent">Container</code>,{" "}
+          <code className="text-text-accent">Button</code>,{" "}
+          <code className="text-text-accent">Eyebrow</code> — the{" "}
+          <code className="text-text-accent">Reveal</code>,{" "}
+          <code className="text-text-accent">useCountUp</code> and hover-lift
+          motion helpers, plus the content components{" "}
+          <code className="text-text-accent">GlassCard</code>,{" "}
+          <code className="text-text-accent">DealCard</code> and{" "}
+          <code className="text-text-accent">StatBlock</code>. All respect{" "}
+          <code className="text-text-accent">prefers-reduced-motion</code>.
+        </p>
+        <PrimitivesShowcase />
       </section>
     </main>
   );

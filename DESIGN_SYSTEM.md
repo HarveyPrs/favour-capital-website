@@ -153,9 +153,11 @@ Named tokens — use everywhere for consistency. All motion respects `prefers-re
 - **Reveal on scroll** — `opacity 0→1`, `y 16→0`, `dur-slow`, `ease-out`, `whileInView` once, `staggerChildren: 0.1`.
 - **Count-up** — animate number 0→target over `dur-count`, cubic ease-out, on in-view. Always `Math.round`.
 - **Hover-lift** (buttons/cards) — `y: -3px` + deepen shadow, `dur-fast`. `active`: `y: -1px`.
-- **Ken-Burns** (hero photo) — `scale 1→1.08`, `dur-ambient`, `alternate`, infinite.
-- **Glow drift** — translate/scale blobs slowly, `mix-blend-mode: screen`, infinite alternate.
+- **Ken-Burns** (hero photo) — `scale 1→1.08`, `dur-ambient`, `alternate`, infinite. Exposed as the `animate-ken-burns` utility (`--animate-ken-burns`, 26s).
+- **Glow drift** — translate/scale blobs slowly, `mix-blend-mode: screen`, infinite. Exposed as `animate-drift-slow` / `animate-drift-slower` (`--animate-drift-*`, 15s / 18s). All three are `motion-safe:`-gated so they drop under reduced motion.
+- **Cut shine** — a bright band sweeps once along the folded-corner cut, then rests, on a slow 15s ambient loop. Exposed as `animate-cut-shine` (`--animate-cut-shine`), `motion-safe:`-gated.
 - **Pulse dot** — expanding box-shadow ring, 2s infinite (live/status indicator).
+- **Bob** (hero glass tombstones) — `translateY 0→-8px→0`, `6s`, `ease-inout`, infinite. Exposed as the `animate-bob` utility (`--animate-bob` token); a stack of cards drifts out of phase via a per-card `animationDelay` (0 / .55 / 1.1s). `motion-safe:`-gated, so it's dropped under reduced motion.
 
 ---
 
@@ -168,6 +170,7 @@ Specs reflect the approved hero. Build as reusable React components.
 - Transparent over dark hero; on scroll → `ink`@85% with `backdrop-blur` + hairline bottom.
 - Left: logo lockup (white on dark, full-color on light). Center/right: nav links (`label`, `text-secondary`, hover white). Right: **Get in touch** pill.
 - Mobile: hamburger → full-screen `ink` overlay menu.
+- Logo/tone swap: the fixed bar is dark-toned by default. A light-background section can claim the bar (navy wordmark + white glass fill) by carrying a `data-header-light` attribute on the element that sits under the header band — `<SiteHeader>` watches these and applies `.tone-light` while one straddles the header baseline. The lockup is a tight-cropped inline SVG (`<Logo>`); the mark keeps its brand colors, the wordmark inherits `currentColor`.
 
 ### Buttons
 
@@ -196,9 +199,13 @@ Number (Sora 800, 22–36px, white/navy) + overline label (`text-muted`). Count-
 
 Handles vertical rhythm, container, optional dark/light variant, optional background layers (photo + scrim + grid + glow). Props: `tone: 'dark' | 'light'`, `bg?`.
 
-### Background layers (dark hero)
+### Background layers (`<BackgroundLayers>`)
 
-Stack z-order: photo (`opacity .62`, Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → content. Diagonal orange+blue lines = brand motif, top-left corner.
+Reusable layered backdrop for dark immersive sections — **dark by default** (§2.7). Stack z-order: photo (Ken-Burns) → glow blobs (`screen`) → grid (masked) → scrim (dual gradient for legibility) → diagonal accent → **ink veil** → content. The veil is a full-bleed `ink` wash over the photo + glow so the backdrop reads as a moody dark surface with the image popping through, rather than a lit photo; it sits above the ambient layers and below the content, so it only ever dims the backdrop. The diagonal is a **folded / paper-cut corner** in the top-left: a subtle brand-tinted glass flap (`screen`) for depth, and a crisp diagonal cut — two lit orange+blue lips over a drop shadow — that **fades out at both tips** where it meets the edges, so it wraps the corner of the poster rather than reading as applied bars. A slow light glides along the cut (`animate-cut-shine`, `motion-safe:`-gated). Light surfaces stay opt-in via the `.tone-light` scope (they don't use this backdrop).
+
+- Props: `layers?` (subset of `photo | glow | grid | scrim | diagonal`, default all — photo auto-skips with no image), `image?`, `imageAlt?`, `imagePosition?`, `priority?`, `intensity?` (`subtle | normal | bold`, default `normal` — scales photo + glow opacity and the ink veil together: `normal` is the balanced dark house look, `subtle` sinks the photo deeper into the dark, `bold` pulls it forward with a lighter veil; the scrim underneath is untouched so the AA guarantee only strengthens as the veil deepens).
+- Server component: pure CSS + `next/image`, `aria-hidden`, non-interactive. The composite geometry/masks live as the `fx-blob` / `fx-grid` / `fx-scrim` utilities in `globals.css` (all color from tokens); ambient loops use the `animate-ken-burns` / `animate-drift-*` tokens, `motion-safe:`-gated (§8).
+- Drop it into the `<Section bg={…}>` slot: the section becomes a clipped stacking context and its content is lifted to `relative z-10` above the layers.
 
 ### Footer
 

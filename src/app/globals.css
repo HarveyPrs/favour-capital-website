@@ -112,6 +112,67 @@
      curves so `ease-out` / `ease-in-out` are correct everywhere by default. */
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Ambient bob (§6) — gentle float loop for hero glass tombstones.
+     6s ambient-tier duration on the house ambient curve; applied via the
+     `motion-safe:animate-bob` utility so it drops under reduced motion (§8). */
+  --animate-bob: bob 6s var(--ease-in-out) infinite;
+
+  @keyframes bob {
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* ---- Ambient background loops (§5, §6) — Ken-Burns photo push-in and the
+     two glow-blob drifts for the layered dark-section background. Applied via
+     the `motion-safe:animate-*` utilities so they pause under reduced motion
+     (§8). Durations sit inside the `dur-ambient` 15–26s band. */
+  --animate-ken-burns: ken-burns 26s var(--ease-in-out) infinite alternate;
+  --animate-drift-slow: drift-slow 15s var(--ease-in-out) infinite;
+  --animate-drift-slower: drift-slower 18s var(--ease-in-out) infinite;
+
+  @keyframes ken-burns {
+    to {
+      transform: scale(1.08) translateY(-2%);
+    }
+  }
+
+  @keyframes drift-slow {
+    50% {
+      transform: translate(40px, 30px) scale(1.08);
+    }
+  }
+
+  @keyframes drift-slower {
+    50% {
+      transform: translate(-40px, 26px) scale(1.06);
+    }
+  }
+
+  /* ---- Cut shine (§6) — a slow light that glides along the folded-corner
+     paper cut, then rests. Ambient-tier loop, `motion-safe:`-gated so it
+     pauses under reduced motion (§8). */
+  --animate-cut-shine: cut-shine 15s var(--ease-in-out) infinite;
+
+  @keyframes cut-shine {
+    0% {
+      background-position: 150% 0;
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    28% {
+      background-position: -50% 0;
+      opacity: 1;
+    }
+    34%,
+    100% {
+      background-position: -50% 0;
+      opacity: 0;
+    }
+  }
 }
 
 /* Desktop type scale (§3) — ≥768px matches Tailwind's `md` breakpoint. */
@@ -198,6 +259,110 @@
   background: var(--glass);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+/*
+ * Background layer system (§6) — composite layers for dark immersive
+ * sections, stacked photo → glow → grid → scrim → diagonal → content. All
+ * color comes from tokens; the geometry/masks below are the canonical
+ * background implementation so the `<BackgroundLayers>` component stays
+ * declarative. Ambient loops ride the `animate-*` tokens above.
+ */
+
+/* Glow blob — soft radial light (pair with a `glow-orange` / `glow-blue`
+   fill and a `motion-safe:animate-drift-*` loop). `screen` blend lets it
+   lift the photo below; blobs sit above the photo (z-index 1). */
+@utility fx-blob {
+  position: absolute;
+  z-index: 1;
+  border-radius: var(--radius-pill);
+  filter: blur(80px);
+  mix-blend-mode: screen;
+}
+
+/* Hairline grid, radially masked so it fades out toward the edges (§1). */
+@utility fx-grid {
+  z-index: 2;
+  background-image:
+    linear-gradient(var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline) 1px, transparent 1px);
+  background-size: 52px 52px;
+  --fx-grid-mask: radial-gradient(
+    ellipse 80% 70% at 50% 30%,
+    #000 40%,
+    transparent 100%
+  );
+  -webkit-mask-image: var(--fx-grid-mask);
+  mask-image: var(--fx-grid-mask);
+}
+
+/* Dual-gradient scrim — the legibility guarantee (§8). Darkens toward the
+   bottom and left where hero copy lands so text clears AA over any photo. */
+@utility fx-scrim {
+  z-index: 3;
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-ink) 3%,
+      color-mix(in srgb, var(--color-ink) 32%, transparent) 40%,
+      color-mix(in srgb, var(--color-ink) 86%, transparent) 100%
+    ),
+    linear-gradient(
+      90deg,
+      var(--color-ink) 6%,
+      color-mix(in srgb, var(--color-ink) 15%, transparent) 60%,
+      transparent 85%
+    );
+}
+
+/*
+ * Global reset — base element styles mapped to type tokens (§3), so
+ * semantic HTML renders correctly before any utility classes are applied.
+ * Components should still reach for the `text-*` / `font-*` utilities
+ * directly when they need a size that doesn't match the element's default.
+ */
+@layer base {
+  body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    letter-spacing: var(--text-h1--letter-spacing);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+    font-weight: 600;
+  }
+
+  a {
+    color: inherit;
+  }
 }
 
 body {
