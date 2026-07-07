@@ -60,3 +60,14 @@ export const industrySectors: IndustrySector[] = [
     ],
   },
 ];
+
+/** Look up a coverage area by name — the single source the sub-pages read from
+ *  so their sub-vertical grids never drift from the landing hub. */
+export function getSector(name: IndustrySector["name"]): IndustrySector {
+  const sector = industrySectors.find((s) => s.name === name);
+  if (!sector) throw new Error(`Unknown industry sector: ${name}`);
+  return sector;
+}
+
+/** Technology coverage area — consumed by the Tech sub-page (FAV-22). */
+export const technologySector = getSector("Technology");
