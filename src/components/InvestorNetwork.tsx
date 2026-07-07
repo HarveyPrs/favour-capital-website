@@ -13,6 +13,7 @@ import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { StatBlock } from "@/components/StatBlock";
 import { cn } from "@/lib/cn";
+import { ease } from "@/lib/motion";
 
 /**
  * Homepage investor network (FAV-17) — visualizes Favour Capital's global
@@ -120,7 +121,7 @@ export function InvestorNetwork() {
         </h2>
         <p className="mt-4 text-body-lg text-text-secondary">
           From our Singapore base we connect Asia&apos;s industry leaders to the
-          right capital across 18 markets — spanning Asia, the Middle East,
+          right capital across 15 markets — spanning Asia, the Middle East,
           Europe, Oceania and North America.
         </p>
       </Reveal>
@@ -168,12 +169,16 @@ export function InvestorNetwork() {
                             ? "stroke-brand-blue/15 [stroke-width:1]"
                             : "stroke-brand-blue/40 [stroke-width:1]",
                       )}
-                      initial={{ pathLength: prefersReducedMotion ? 1 : 0 }}
+                      // Preference-independent `initial` so server and client
+                      // render the same first frame (no hydration mismatch) —
+                      // reduced motion is honored by collapsing the transition
+                      // to 0 below, which snaps the arc in on scroll (§8).
+                      initial={{ pathLength: 0 }}
                       whileInView={{ pathLength: 1 }}
                       viewport={{ once: true, margin: "-10% 0px" }}
                       transition={{
                         duration: prefersReducedMotion ? 0 : 1.1,
-                        ease: "easeOut",
+                        ease: ease.out,
                         delay: prefersReducedMotion ? 0 : 0.15 + i * 0.06,
                       }}
                     />
@@ -261,7 +266,7 @@ export function InvestorNetwork() {
       <div className="mt-10 grid gap-10 md:mt-12 md:grid-cols-[minmax(0,15rem)_1fr] md:gap-14">
         <Reveal className="flex flex-row gap-10 md:flex-col md:gap-8">
           <StatBlock value={500} suffix="+" label="Investors in our network" placeholder />
-          <StatBlock value={18} suffix="+" label="Markets across five regions" />
+          <StatBlock value={15} suffix="+" label="Markets across five regions" />
         </Reveal>
 
         <Reveal>

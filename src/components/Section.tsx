@@ -45,6 +45,10 @@ export function Section({
   return (
     <section
       id={id}
+      // Light sections claim the fixed header while they straddle its baseline
+      // (§6, §2.7): `<SiteHeader>` watches `[data-header-light]` and flips the
+      // bar to `.tone-light` (navy wordmark + white glass) over them.
+      data-header-light={tone === "light" ? "" : undefined}
       className={cn(
         "py-16 md:py-24",
         Boolean(bg) && "relative isolate overflow-hidden",
