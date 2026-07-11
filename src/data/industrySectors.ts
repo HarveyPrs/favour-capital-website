@@ -71,3 +71,6 @@ export function getSector(name: IndustrySector["name"]): IndustrySector {
 
 /** Technology coverage area — consumed by the Tech sub-page (FAV-22). */
 export const technologySector = getSector("Technology");
+
+/** Consumer coverage area — consumed by the Consumer sub-page (FAV-23). */
+export const consumerSector = getSector("Consumer");
